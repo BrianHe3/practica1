@@ -1,10 +1,5 @@
 package BLL;
 
-
-import javax.swing.JOptionPane;
-
-import BLL.Usuario;
-
 public class Alumno extends Usuario {
 
     
@@ -19,11 +14,6 @@ public class Alumno extends Usuario {
 		return "Alumno [toString()=" + super.toString() + "]";
 	}
     
-	public void menuAlumno() {
-		
-		
-		JOptionPane.showMessageDialog(null, "Menu de alumno");
-	}
     
    
 }

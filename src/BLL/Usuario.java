@@ -1,6 +1,8 @@
 package BLL;
 
-public abstract class Usuario {
+import repository.Encriptador;
+
+public class Usuario implements Encriptador {
     protected int id;
     protected String nombre;
     protected String email;
@@ -8,6 +10,14 @@ public abstract class Usuario {
     protected String password;
     public Usuario(int id, String nombre, String email,String tipo,String password) {
         this.id = id;
+        this.nombre = nombre;
+        this.email = email;
+        this.tipo = tipo;
+        this.password = password;
+        
+    }
+    public Usuario( String nombre, String email,String tipo,String password) {
+  
         this.nombre = nombre;
         this.email = email;
         this.tipo = tipo;

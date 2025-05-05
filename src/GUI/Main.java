@@ -1,14 +1,10 @@
 package GUI;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import javax.swing.JOptionPane;
-
-import BLL.Alumno;
-import BLL.Profesor;
 import DLL.ControllerUsuario;
 import BLL.Usuario;
+import BLL.Alumno;
+import BLL.Profesor;
 
 public class Main {
     public static void main(String[] args) {
@@ -42,15 +38,11 @@ public class Main {
                     Usuario usuario = controller.login(nombre, contrasenia);
                     if (usuario != null) {
                         if (usuario instanceof Profesor) {
-                        	Profesor profesor = (Profesor)usuario;
-                            JOptionPane.showMessageDialog(null, "Bienvenido Profesor " + usuario.getNombre());
+                            JOptionPane.showMessageDialog(null, "Bienvenido Profesor " + usuario);
                             // Ir a menu de profesor
-                            profesor.menuProfesor();
                         } else if (usuario instanceof Alumno) {
                             JOptionPane.showMessageDialog(null, "Bienvenido Alumno " + usuario.getNombre());
                             // Ir a menu de alumno
-                            Alumno alumno = (Alumno)usuario;
-                            alumno.menuAlumno();
                         }
                     } else {
                         JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
@@ -59,8 +51,11 @@ public class Main {
 
                 case 1: 
                 	
-                	//falta registrar :D
-                    
+                	controller.agregarUsuario(
+                			new Profesor("Gamaliel","Ghamiboxbox@gmail.com","Profesor","programacion123")
+                			);
+
+                	
                     break;
             }
         } while (menu != 2);

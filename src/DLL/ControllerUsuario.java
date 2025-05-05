@@ -5,25 +5,26 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.LinkedList;
 
+import BLL.Usuario;
 import BLL.Alumno;
 import BLL.Profesor;
-import BLL.Usuario;
+import repository.Encriptador;
 import repository.UsuarioRepository;
 
-public class ControllerUsuario<T extends Usuario> implements UsuarioRepository {
+public class ControllerUsuario<T extends Usuario> implements UsuarioRepository{
 
     private static Connection con = Conexion.getInstance().getConnection();
 
     @Override
     public T login(String nombre, String password) {
-        T usuario = null;
+        T usuario = (T) new Usuario();
         try {
             PreparedStatement stmt = con.prepareStatement(
                 "SELECT * FROM usuario WHERE nombre = ? AND password = ?"
             );
             stmt.setString(1, nombre);
-            stmt.setString(2, password);
-            
+            stmt.setString(2, usuario.encriptar(password));
+
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
@@ -33,10 +34,10 @@ public class ControllerUsuario<T extends Usuario> implements UsuarioRepository {
 
                 switch (tipo.toLowerCase()) {
                     case "alumno":
-                        usuario = (T) new Alumno(id, nombre, email, tipo, password);
+                        usuario = (T) new Alumno(id, nombre, email, tipo, usuario.desencriptar(password));
                         break;
                     case "profesor":
-                        usuario = (T) new Profesor(id, nombre, email, tipo, password);
+                        usuario = (T) new Profesor(id, nombre, email, tipo, usuario.desencriptar(password));
                         break;
                     default:
                         System.out.println("Tipo de usuario desconocido: " + tipo);
@@ -58,7 +59,7 @@ public class ControllerUsuario<T extends Usuario> implements UsuarioRepository {
             statement.setString(1, usuario.getNombre());
             statement.setString(2, usuario.getEmail());
             statement.setString(3, usuario.getTipo());
-            statement.setString(4, usuario.getPassword());
+            statement.setString(4, usuario.encriptar(usuario.getPassword()));
 
             int filas = statement.executeUpdate();
             if (filas > 0) {
